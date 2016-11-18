@@ -1,4 +1,4 @@
-/// DSMap9.t.sol -- tests for 12-to-32-byte key-value store
+/// DSMap9.t.sol -- tests for DSMap9
 
 // Copyright 2016  Nexus Development, LLC
 //
@@ -24,11 +24,11 @@ contract DSMap9Test is Test, DSMap9Events {
     DSMap9 map = new DSMap9();
 
     function testFail_get_1() {
-        map.get(bytes12(0));
+        map.get(0);
     }
 
     function testFail_get_2() {
-        map.get(bytes12(0x1234));
+        map.get(0x1234);
     }
 
     function test_get() {
@@ -47,13 +47,13 @@ contract DSMap9Test is Test, DSMap9Events {
         assert_get(0x1234, true, 0x5678);
     }
 
-    function set(bytes12 key, bytes32 value) internal {
+    function set(bytes32 key, bytes32 value) internal {
         LogUpdate(key, value, uint(-1));
         map.set(key, value);
     }
 
-    function assert_get(bytes12 key, bool expectedHas, bytes32 expected) {
-        bool ok = map.call.gas(10000)(bytes4(sha3("get(bytes12)")), key);
+    function assert_get(bytes32 key, bool expectedHas, bytes32 expected) {
+        bool ok = map.call.gas(10000)(bytes4(sha3("get(bytes32)")), key);
 
         if (expectedHas) {
             assertTrue(ok);

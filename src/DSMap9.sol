@@ -1,4 +1,4 @@
-/// DSMap9.sol -- 12-to-32-byte key-value store with expiration
+/// DSMap9.sol -- simple key-value store with expiration
 
 // Copyright 2016  Nexus Development, LLC
 //
@@ -20,21 +20,21 @@ import "ds-auth/auth.sol";
 
 contract DSMap9Events {
     event LogUpdate(
-        bytes12 indexed  key,
+        bytes32 indexed  key,
         bytes32 indexed  value,
         uint             expiry
     );
 }
 
 contract DSMap9 is DSAuth, DSMap9Events {
-    mapping (bytes12 => bytes32)      values;
-    mapping (bytes12 => uint) public  expiry;
+    mapping (bytes32 => bytes32)      values;
+    mapping (bytes32 => uint) public  expiry;
 
-    function has(bytes12 key) constant returns (bool) {
+    function has(bytes32 key) constant returns (bool) {
         return now < expiry[key];
     }
 
-    function get(bytes12 key) constant returns (bytes32) {
+    function get(bytes32 key) constant returns (bytes32) {
         if (has(key)) {
             return values[key];
         } else {
@@ -42,17 +42,17 @@ contract DSMap9 is DSAuth, DSMap9Events {
         }
     }
 
-    function set(bytes12 key, bytes32 newValue, uint newExpiry) auth {
+    function set(bytes32 key, bytes32 newValue, uint newExpiry) auth {
         values[key] = newValue;
         expiry[key] = newExpiry;
         LogUpdate(key, newValue, newExpiry);
     }
 
-    function set(bytes12 key, bytes32 newValue) auth {
+    function set(bytes32 key, bytes32 newValue) auth {
         set(key, newValue, uint(-1));
     }
 
-    function unset(bytes12 key) auth {
+    function unset(bytes32 key) auth {
         set(key, 0, 0);
     }
 }
