@@ -1,4 +1,4 @@
-/// DSMap9.t.sol -- tests for DSMap9
+/// DSMap40.t.sol -- tests for DSMap40
 
 // Copyright 2016  Nexus Development, LLC
 //
@@ -18,10 +18,10 @@ pragma solidity ^0.4.4;
 
 import "dapple/test.sol";
 
-import "DSMap9.sol";
+import "DSMap40.sol";
 
-contract DSMap9Test is Test, DSMap9Events {
-    DSMap9 map = new DSMap9();
+contract DSMap40Test is Test, DSMap40Events {
+    DSMap40 map = new DSMap40();
 
     function testFail_get_1() {
         map.get(0);
@@ -48,7 +48,7 @@ contract DSMap9Test is Test, DSMap9Events {
     }
 
     function set(bytes32 key, bytes32 value) internal {
-        LogUpdate(key, value, uint(-1));
+        LogSet(key, value, uint(-1));
         map.set(key, value);
     }
 

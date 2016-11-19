@@ -1,4 +1,4 @@
-/// DSMap9.sol -- simple key-value store with expiration
+/// DSMap40.sol -- simple key-value store with key expiry
 
 // Copyright 2016  Nexus Development, LLC
 //
@@ -16,19 +16,19 @@
 
 pragma solidity ^0.4.4;
 
-import "ds-auth/auth.sol";
+import "ds-auth/DSAuth30.sol";
 
-contract DSMap9Events {
-    event LogUpdate(
+contract DSMap40Events {
+    event LogSet(
         bytes32 indexed  key,
         bytes32 indexed  value,
         uint             expiry
     );
 }
 
-contract DSMap9 is DSAuth, DSMap9Events {
-    mapping (bytes32 => bytes32)      values;
-    mapping (bytes32 => uint) public  expiry;
+contract DSMap40 is DSAuth30, DSMap40Events {
+    mapping (bytes32 => bytes32)          values;
+    mapping (bytes32 => uint)     public  expiry;
 
     function has(bytes32 key) constant returns (bool) {
         return now < expiry[key];
@@ -45,7 +45,7 @@ contract DSMap9 is DSAuth, DSMap9Events {
     function set(bytes32 key, bytes32 newValue, uint newExpiry) auth {
         values[key] = newValue;
         expiry[key] = newExpiry;
-        LogUpdate(key, newValue, newExpiry);
+        LogSet(key, newValue, newExpiry);
     }
 
     function set(bytes32 key, bytes32 newValue) auth {
