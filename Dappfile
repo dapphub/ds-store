@@ -1,6 +1,6 @@
 name:     ds-data
 version:  0
 layout:
-  sol_sources:         src
+  sol_sources:         .
   build_dir:           .dapple/build
   packages_directory:  .dapple/packages
