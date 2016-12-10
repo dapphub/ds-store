@@ -3,4 +3,4 @@ version:  0
 layout:
   build_dir:            build
   packages_directory:   lib
-  sol_sources:          .
+  sol_sources:          src
