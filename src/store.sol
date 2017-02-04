@@ -14,21 +14,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+pragma solidity ^0.4.9;
+
 import 'ds-auth/auth.sol';
 
 contract DSStoreEvents {
-    event LogDSStoreUpdate( bytes32 indexed key, bytes32 indexed value, bool indexed is_set );
+    event LogStoreChange( bytes32 indexed key, bytes32 indexed value, bool indexed is_set );
 }
 
 contract DSIStore is DSStoreEvents {
     function set(bytes32 key, bytes32 value);
     function unset(bytes32 key);
-    function has(bytes32 key) returns (bool);
-    function get( bytes32 key ) returns (bytes32 value);
+    function has(bytes32 key) constant returns (bool);
+    function get( bytes32 key ) constant returns (bytes32 value);
     function tryGet( bytes32 key ) constant returns (bytes32 value, bool ok );
 }
 
-contract DSStore is DSAuth {
+contract DSStore is DSIStore
+                  , DSAuth
+{
     struct NullableValue {
         bytes32 _value;
         bool    _set;
@@ -39,13 +43,13 @@ contract DSStore is DSAuth {
              auth
     {
         _storage[key] = NullableValue(value, true);
-        SetNullable( key, value, true );
+        LogStoreChange( key, value, true );
     }
     function unset(bytes32 key)
              auth
     {
         _storage[key] = NullableValue(0x0, false);
-        SetNullable( key, 0x0, false );
+        LogStoreChange( key, 0x0, false );
     }
 
     function has(bytes32 key)
