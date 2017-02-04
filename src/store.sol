@@ -18,11 +18,7 @@ pragma solidity ^0.4.9;
 
 import 'ds-auth/auth.sol';
 
-contract DSStoreEvents {
-    event LogStoreChange( bytes32 indexed key, bytes32 indexed value, bool indexed is_set );
-}
-
-contract DSIStore is DSStoreEvents {
+contract DSIStore {
     function set(bytes32 key, bytes32 value);
     function unset(bytes32 key);
     function has(bytes32 key) constant returns (bool);
@@ -30,7 +26,13 @@ contract DSIStore is DSStoreEvents {
     function tryGet( bytes32 key ) constant returns (bytes32 value, bool ok );
 }
 
+contract DSStoreEvents {
+    event LogStoreChange( bytes32 indexed key, bytes32 indexed value, bool indexed is_set );
+}
+
+
 contract DSStore is DSIStore
+                  , DSStoreEvents
                   , DSAuth
 {
     struct NullableValue {
